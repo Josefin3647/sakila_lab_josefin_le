@@ -29,13 +29,13 @@ order by month_number
 from sakila.rental_store
 ```
 
-### Select a store to view results by store
+### Select a store to view the results for that store:
 
 <Dropdown 
 data={rents}
 name=store
 value=store_id
-title="Select a store" defaultValue="">
+title="Select a store" defaultValue="1">
 </Dropdown>
 
 ```sql store_choice
@@ -57,5 +57,26 @@ order by month_number
     x=month
     y=number_of_rentals
     sort={false}
+    yFmt="$#,##0"
 />
 
+# Total revenue per film category
+
+```sql total_rev
+select
+    name as category,
+    SUM(amount) as total_revenue
+from sakila.film_category
+where amount is not null
+group by category
+order by total_revenue desc
+```
+
+<BarChart
+    data={total_rev}
+    title="All stores"
+    x=category
+    y=total_revenue
+    swapXY=true
+    yFmt="$#,##0"
+/>
